@@ -1,0 +1,48 @@
+{
+  "cristin_person_id" : "12345",
+  "first_name" : "Ola",
+  "surname" : "Nordmann",
+  "identified_cristin_person" : true,
+  "cristin_profile_url" : "https://app.cristin.no/persons/show.jsf?id=12345",
+  "picture_url" : "https://api.cristin.no/v2/persons/12345/picture",
+  "affiliations" : [ {
+    "institution" : {
+      "cristin_institution_id" : "185",
+      "url" : "https://api.cristin.no/v2/institutions/185"
+    },
+    "unit" : {
+      "cristin_unit_id" : "185.52.12.0",
+      "url" : "https://api.cristin.no/v2/units/185.52.12.0"
+    },
+    "active" : false,
+    "position" : {
+      "en" : "Guest"
+    }
+  }, {
+    "institution" : {
+      "cristin_institution_id" : "204",
+      "url" : "https://api.cristin.no/v2/institutions/204"
+    },
+    "unit" : {
+      "cristin_unit_id" : "204.40.0.0",
+      "url" : "https://api.cristin.no/v2/units/204.40.0.0"
+    },
+    "active" : true,
+    "position" : {
+      "en" : "Professor"
+    }
+  }, {
+    "institution" : {
+      "cristin_institution_id" : "222",
+      "url" : "https://api.cristin.no/v2/institutions/222"
+    },
+    "unit" : {
+      "cristin_unit_id" : "222.57.4.0",
+      "url" : "https://api.cristin.no/v2/units/222.57.4.0"
+    },
+    "active" : true,
+    "position" : {
+      "en" : "Professor"
+    }
+  } ]
+}

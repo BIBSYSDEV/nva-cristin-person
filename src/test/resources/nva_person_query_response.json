@@ -1,0 +1,105 @@
+{
+  "@context": "https://example.org/person-search-context.json",
+  "id": "https://api.dev.nva.aws.unit.no/person/search?QUERY_PARAMS",
+  "size": 0,
+  "query": "name=Mattias",
+  "processingTime": 1000,
+  "firstRecord": 0,
+  "nextResults": "",
+  "hits": [
+    {
+      "id": "https://api.dev.nva.aws.unit.no/person/1111",
+      "type": "Person",
+      "identifier": [
+        {
+          "type": "CristinIdentifier",
+          "value": "1111"
+        }
+      ],
+      "name": "Testperson1, Mattias",
+      "affiliation": [
+        {
+          "id": "https://api.cristin.no/v2/units/191.10.0.0"
+        },
+        {
+          "id": "https://api.cristin.no/v2/units/185.50.1.2",
+          "role": "Adviser"
+        }
+      ],
+      "imageUrl": "https://api.cristin.no/v2/persons/1111/picture",
+      "verified": true
+    },
+    {
+      "id": "https://api.dev.nva.aws.unit.no/person/2222",
+      "type": "Person",
+      "identifier": [
+        {
+          "type": "CristinIdentifier",
+          "value": "2222"
+        }
+      ],
+      "name": "Testperson2, Mattias",
+      "affiliation": [
+        {
+          "id": "https://api.cristin.no/v2/units/190.0.0.0",
+          "role": "External"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "https://api.dev.nva.aws.unit.no/person/3333",
+      "type": "Person",
+      "identifier": [
+        {
+          "type": "CristinIdentifier",
+          "value": "3333"
+        }
+      ],
+      "name": "Testperson3, Mattias",
+      "affiliation": [
+        {
+          "id": "https://api.cristin.no/v2/units/191.10.0.0",
+          "role": "U.pers.u/godkj.utd"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "https://api.dev.nva.aws.unit.no/person/4444",
+      "type": "Person",
+      "identifier": [
+        {
+          "type": "CristinIdentifier",
+          "value": "4444"
+        }
+      ],
+      "name": "Testperson4, Mattias",
+      "affiliation": [
+        {
+          "id": "https://api.cristin.no/v2/units/185.15.26.0",
+          "role": "Guest"
+        }
+      ],
+      "verified": true
+    },
+    {
+      "id": "https://api.dev.nva.aws.unit.no/person/5555",
+      "type": "Person",
+      "identifier": [
+        {
+          "type": "CristinIdentifier",
+          "value": "5555"
+        }
+      ],
+      "name": "Testperson5, Mattias",
+      "affiliation": [
+        {
+          "id": "https://api.cristin.no/v2/units/186.45.0.0",
+          "role": "Guest"
+        }
+      ],
+      "verified": true
+    }
+  ]
+}
