@@ -12,5 +12,5 @@ public class CristinPerson {
     public String surname;
     public Boolean identifiedCristinPerson;
     public String pictureUrl;
-    public List<CristinAffiliation> affiliations;
+    public List<CristinAffiliation> affiliation;
 }
