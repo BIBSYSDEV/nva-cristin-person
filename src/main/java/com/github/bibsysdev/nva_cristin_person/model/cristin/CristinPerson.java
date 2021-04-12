@@ -1,8 +1,10 @@
 package com.github.bibsysdev.nva_cristin_person.model.cristin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.List;
+import nva.commons.core.StringUtils;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CristinPerson {
@@ -13,4 +15,60 @@ public class CristinPerson {
     public Boolean identifiedCristinPerson;
     public String pictureUrl;
     public List<CristinAffiliation> affiliation;
+
+    public String getCristinPersonId() {
+        return cristinPersonId;
+    }
+
+    public void setCristinPersonId(String cristinPersonId) {
+        this.cristinPersonId = cristinPersonId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public Boolean getIdentifiedCristinPerson() {
+        return identifiedCristinPerson;
+    }
+
+    public void setIdentifiedCristinPerson(Boolean identifiedCristinPerson) {
+        this.identifiedCristinPerson = identifiedCristinPerson;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public List<CristinAffiliation> getAffiliation() {
+        return affiliation;
+    }
+
+    public void setAffiliation(
+        List<CristinAffiliation> affiliation) {
+        this.affiliation = affiliation;
+    }
+
+    @JsonIgnore
+    public boolean hasValidContent() {
+        return StringUtils.isNotBlank(cristinPersonId)
+            && StringUtils.isNotBlank(firstName)
+            && StringUtils.isNotBlank(surname);
+    }
 }

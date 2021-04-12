@@ -1,8 +1,7 @@
 package com.github.bibsysdev.nva_cristin_person;
 
-import static com.github.bibsysdev.nva_cristin_person.GetCristinPerson.DEFAULT_LANGUAGE_CODE;
-import static com.github.bibsysdev.nva_cristin_person.GetCristinPerson.LANGUAGE_QUERY_PARAMETER;
-import static com.github.bibsysdev.nva_cristin_person.model.cristin.CristinPerson.hasRequiredContent;
+import static com.github.bibsysdev.nva_cristin_person.OneCristinPersonHandler.DEFAULT_LANGUAGE_CODE;
+import static com.github.bibsysdev.nva_cristin_person.OneCristinPersonHandler.LANGUAGE_QUERY_PARAMETER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,26 +31,26 @@ import org.apache.commons.codec.Charsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CristinPersonTest {
+public class OneCristinPersonHandlerTest {
 
     private static final String EMPTY_JSON = "{}";
     private static final String CRISTIN_PERSON_RESPONSE_INVALID_ID_JSON = "cristin_person_response_invalid_id.json";
     private static final String CRISTIN_PERSON_RESPONSE_JSON = "cristin_person_response.json";
     private static final String INVALID_ID = "Not an ID";
     private static final String DEFAULT_ID = "9999";
-    private CristinApiClient cristinApiClientStub;
     private final Environment environment = new Environment();
+    private final ObjectMapper objectMapper = JsonUtils.objectMapper;
+    private CristinApiClient cristinApiClientStub;
     private Context context;
     private ByteArrayOutputStream output;
-    private GetCristinPerson handler;
-    private final ObjectMapper objectMapper = JsonUtils.objectMapper;
+    private OneCristinPersonHandler handler;
 
     @BeforeEach
     void setUp() {
         cristinApiClientStub = new CristinApiClientStub();
         context = mock(Context.class);
         output = new ByteArrayOutputStream();
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
     }
 
     @Test
@@ -59,7 +58,7 @@ public class CristinPersonTest {
         cristinApiClientStub = spy(cristinApiClientStub);
 
         doReturn(getReader(CRISTIN_PERSON_RESPONSE_INVALID_ID_JSON)).when(cristinApiClientStub).getResponse(any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
         assertEquals(objectMapper.readTree(EMPTY_JSON), objectMapper.readTree(response.getBody()));
     }
@@ -84,25 +83,24 @@ public class CristinPersonTest {
         cristinApiClientStub = spy(cristinApiClientStub);
 
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
         assertEquals(objectMapper.readTree(EMPTY_JSON), objectMapper.readTree(response.getBody()));
 
         doThrow(new FileNotFoundException()).when(cristinApiClientStub).getPerson(any(), any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> nextResponse = sendQueryWithId(DEFAULT_ID);
         assertEquals(objectMapper.readTree(EMPTY_JSON), objectMapper.readTree(nextResponse.getBody()));
     }
 
     @Test
     void callingHasValidContentOnCristinPersonOnlyReturnsTrueWhenAllRequiredDataArePresent() {
-        assertFalse(hasRequiredContent(null));
-
         CristinPerson cristinPerson = new CristinPerson();
-        assertFalse(hasRequiredContent(cristinPerson));
-
-        cristinPerson.cristinPersonId = "1234";
-        assertTrue(hasRequiredContent(cristinPerson));
+        assertFalse(cristinPerson.hasValidContent());
+        cristinPerson.setCristinPersonId("1234");
+        cristinPerson.setFirstName("Mattias");
+        cristinPerson.setSurname("Testesen");
+        assertTrue(cristinPerson.hasValidContent());
     }
 
     private GatewayResponse<NvaPerson> sendQueryWithId(String id) throws IOException {

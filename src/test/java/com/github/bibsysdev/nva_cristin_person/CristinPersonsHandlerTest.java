@@ -1,8 +1,9 @@
 package com.github.bibsysdev.nva_cristin_person;
 
-import static com.github.bibsysdev.nva_cristin_person.GetCristinPerson.LANGUAGE_QUERY_PARAMETER;
-import static com.github.bibsysdev.nva_cristin_person.GetCristinPerson.NAME_QUERY_PARAMETER;
-import static com.github.bibsysdev.nva_cristin_person.model.cristin.CristinConstants.PERSON_LOOKUP_CONTEXT_URL;
+import static com.github.bibsysdev.nva_cristin_person.CristinApiClient.PERSON_LOOKUP_CONTEXT_URL;
+import static com.github.bibsysdev.nva_cristin_person.CristinHandler.LANGUAGE_INVALID_ERROR_MESSAGE;
+import static com.github.bibsysdev.nva_cristin_person.CristinPersonsHandler.LANGUAGE_QUERY_PARAMETER;
+import static com.github.bibsysdev.nva_cristin_person.CristinPersonsHandler.NAME_QUERY_PARAMETER;
 import static nva.commons.apigateway.ApiGatewayHandler.APPLICATION_PROBLEM_JSON;
 import static nva.commons.core.attempt.Try.attempt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +43,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-public class QueryCristinPersonsTest {
+public class CristinPersonsHandlerTest {
 
     private static final String LANGUAGE_KEY = "language";
     private static final String EMPTY_STRING = "";
@@ -57,15 +58,15 @@ public class QueryCristinPersonsTest {
     private static final String CRISTIN_PERSON_RESPONSE = "cristin_person_response.json";
     private static final String QUERY_NVA_PERSONS_RESPONSE_NO_HITS_JSON = "query_nva_persons_response_no_hits.json";
     private final ObjectMapper objectMapper = JsonUtils.objectMapper;
-    private CristinApiClient cristinApiClientStub;
     private final Environment environment = new Environment();
+    private CristinApiClient cristinApiClientStub;
     private Context context;
     private ByteArrayOutputStream output;
-    private GetCristinPerson handler;
+    private CristinPersonsHandler handler;
 
     @Test
     public void handlerReturnsOkWhenInputContainsName() throws Exception {
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatusCode());
     }
 
@@ -73,8 +74,8 @@ public class QueryCristinPersonsTest {
     public void handlerIgnoresErrorsWhenTryingToEnrichPersonInformation() throws Exception {
         cristinApiClientStub = spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        handler = new CristinPersonsHandler(cristinApiClientStub, environment);
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
 
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatusCode());
         assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
@@ -84,8 +85,8 @@ public class QueryCristinPersonsTest {
     public void handlerThrowsInternalErrorWhenQueryingPersonsFails() throws Exception {
         cristinApiClientStub = spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).queryAndEnrichPersons(any(), any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        handler = new CristinPersonsHandler(cristinApiClientStub, environment);
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
 
         assertEquals(HttpURLConnection.HTTP_INTERNAL_ERROR, response.getStatusCode());
         assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
@@ -95,7 +96,7 @@ public class QueryCristinPersonsTest {
     public void handlerThrowsBadRequestWhenMissingNameQueryParameter() throws IOException {
         InputStream input = requestWithQueryParameters(Map.of(LANGUAGE_QUERY_PARAMETER, LANGUAGE_NB));
         handler.handleRequest(input, output, context);
-        GatewayResponse<PersonWrapper> response = GatewayResponse.fromOutputStream(output);
+        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
 
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getStatusCode());
         assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
@@ -105,7 +106,7 @@ public class QueryCristinPersonsTest {
     public void handlerSetsDefaultValueForMissingOptionalLanguageParameterAndReturnOk() throws Exception {
         InputStream input = requestWithQueryParameters(Map.of(NAME_QUERY_PARAMETER, NAME_MATTIAS));
         handler.handleRequest(input, output, context);
-        GatewayResponse<PersonWrapper> response = GatewayResponse.fromOutputStream(output);
+        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
 
         assertEquals(HttpURLConnection.HTTP_OK, response.getStatusCode());
         assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
@@ -113,7 +114,7 @@ public class QueryCristinPersonsTest {
 
     @Test
     public void handlerReceivesAllowOriginHeaderValueFromEnvironmentAndPutsItOnResponse() throws Exception {
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         assertEquals(ALLOW_ALL_ORIGIN, response.getHeaders().get(ApiGatewayHandler.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
 
@@ -121,22 +122,22 @@ public class QueryCristinPersonsTest {
     public void handlerReturnsBadRequestWhenNameQueryParamIsEmpty() throws Exception {
         InputStream input = requestWithQueryParameters(Map.of(NAME_QUERY_PARAMETER, EMPTY_STRING));
         handler.handleRequest(input, output, context);
-        GatewayResponse<PersonWrapper> response = GatewayResponse.fromOutputStream(output);
+        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
 
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getStatusCode());
         assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
-        assertTrue(response.getBody().contains(GetCristinPerson.NAME_MISSING_OR_HAS_ILLEGAL_CHARACTERS));
+        assertTrue(response.getBody().contains(CristinPersonsHandler.NAME_MISSING_EXCEPTION_MESSAGE));
     }
 
     @Test
     public void handlerReturnsBadRequestWhenReceivingNameQueryParamWithIllegalCharacters() throws Exception {
         InputStream input = requestWithQueryParameters(Map.of(NAME_QUERY_PARAMETER, NAME_ILLEGAL_CHARACTERS));
         handler.handleRequest(input, output, context);
-        GatewayResponse<PersonWrapper> response = GatewayResponse.fromOutputStream(output);
+        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
 
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getStatusCode());
         assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
-        assertTrue(response.getBody().contains(GetCristinPerson.NAME_MISSING_OR_HAS_ILLEGAL_CHARACTERS));
+        assertTrue(response.getBody().contains(CristinPersonsHandler.NAME_MISSING_EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -144,11 +145,11 @@ public class QueryCristinPersonsTest {
         InputStream input = requestWithQueryParameters(
             Map.of(NAME_QUERY_PARAMETER, NAME_MATTIAS, LANGUAGE_KEY, LANGUAGE_INVALID));
         handler.handleRequest(input, output, context);
-        GatewayResponse<PersonWrapper> response = GatewayResponse.fromOutputStream(output);
+        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
 
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getStatusCode());
         assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
-        assertTrue(response.getBody().contains(RequestUtils.LANGUAGE_INVALID));
+        assertTrue(response.getBody().contains(LANGUAGE_INVALID_ERROR_MESSAGE));
     }
 
     @Test
@@ -170,7 +171,7 @@ public class QueryCristinPersonsTest {
         cristinApiClientStub = new CristinApiClientStub();
         context = mock(Context.class);
         output = new ByteArrayOutputStream();
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
+        handler = new CristinPersonsHandler(cristinApiClientStub, environment);
     }
 
     @ParameterizedTest
@@ -184,8 +185,8 @@ public class QueryCristinPersonsTest {
     void handlerReturnsNonEnrichedBodyWhenEnrichingFails() throws Exception {
         cristinApiClientStub = spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        handler = new CristinPersonsHandler(cristinApiClientStub, environment);
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         var expected = getReader(NVA_PERSON_RESPONSE_JSON);
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));
     }
@@ -203,17 +204,17 @@ public class QueryCristinPersonsTest {
     }
 
     @Test
-    void handlerReturnsPersonWrapperWithAllMetadataButEmptyHitsArrayWhenNoMatchesAreFoundInCristin() throws Exception {
+    void handlerReturnsPersonsWrapperWithAllMetadataButEmptyHitsArrayWhenNoMatchesAreFoundInCristin() throws Exception {
         cristinApiClientStub = spy(cristinApiClientStub);
         var emptyArray = new InputStreamReader(IoUtils.stringToStream(EMPTY_LIST_STRING), Charsets.UTF_8);
         doReturn(emptyArray).when(cristinApiClientStub).getQueryResponse(any());
         var expected = getReader(QUERY_NVA_PERSONS_RESPONSE_NO_HITS_JSON);
-        handler = new GetCristinPerson(cristinApiClientStub, environment);
-        GatewayResponse<PersonWrapper> response = sendDefaultQuery();
+        handler = new CristinPersonsHandler(cristinApiClientStub, environment);
+        GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));
     }
 
-    private GatewayResponse<PersonWrapper> sendDefaultQuery() throws IOException {
+    private GatewayResponse<PersonsWrapper> sendDefaultQuery() throws IOException {
         InputStream input = requestWithQueryParameters(
             Map.of(NAME_QUERY_PARAMETER, NAME_MATTIAS, LANGUAGE_QUERY_PARAMETER, LANGUAGE_NB));
         handler.handleRequest(input, output, context);

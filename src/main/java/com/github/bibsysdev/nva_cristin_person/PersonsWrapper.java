@@ -1,12 +1,13 @@
 package com.github.bibsysdev.nva_cristin_person;
 
-import static com.github.bibsysdev.nva_cristin_person.Constants.PERSON_SEARCH_CONTEXT_URL;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.List;
 
 public class PersonsWrapper {
+
+    public static final String PERSON_SEARCH_CONTEXT_URL = "https://example.org/search-api-context.json";
 
     @JsonProperty("@context")
     private String context = PERSON_SEARCH_CONTEXT_URL;

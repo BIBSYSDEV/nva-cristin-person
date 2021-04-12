@@ -9,4 +9,20 @@ public class CristinAffiliation {
 
     public CristinUnit unit;
     public Map<String, String> position;
+
+    public CristinUnit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(CristinUnit unit) {
+        this.unit = unit;
+    }
+
+    public Map<String, String> getPosition() {
+        return position;
+    }
+
+    public void setPosition(Map<String, String> position) {
+        this.position = position;
+    }
 }

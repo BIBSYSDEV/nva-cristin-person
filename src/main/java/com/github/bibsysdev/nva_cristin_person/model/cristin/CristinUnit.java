@@ -9,5 +9,21 @@ public class CristinUnit {
 
     public String cristinUnitId;
     public URI url;
+
+    public String getCristinUnitId() {
+        return cristinUnitId;
+    }
+
+    public void setCristinUnitId(String cristinUnitId) {
+        this.cristinUnitId = cristinUnitId;
+    }
+
+    public URI getUrl() {
+        return url;
+    }
+
+    public void setUrl(URI url) {
+        this.url = url;
+    }
 }
 
