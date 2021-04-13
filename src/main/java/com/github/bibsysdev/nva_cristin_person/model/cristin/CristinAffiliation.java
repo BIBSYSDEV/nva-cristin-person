@@ -8,6 +8,7 @@ import java.util.Map;
 public class CristinAffiliation {
 
     public CristinUnit unit;
+    public Boolean active;
     public Map<String, String> position;
 
     public CristinUnit getUnit() {
@@ -16,6 +17,14 @@ public class CristinAffiliation {
 
     public void setUnit(CristinUnit unit) {
         this.unit = unit;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Map<String, String> getPosition() {

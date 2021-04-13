@@ -2,12 +2,16 @@ package com.github.bibsysdev.nva_cristin_person;
 
 import static com.github.bibsysdev.nva_cristin_person.CristinApiClient.BASE_URL;
 import static com.github.bibsysdev.nva_cristin_person.UriUtils.buildUri;
+import com.github.bibsysdev.nva_cristin_person.model.cristin.CristinAffiliation;
 import com.github.bibsysdev.nva_cristin_person.model.cristin.CristinPerson;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaAffiliation;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaIdentifier;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class NvaPersonBuilder {
 
@@ -32,6 +36,8 @@ public class NvaPersonBuilder {
         nvaPerson.setIdentifier(List.of(createNvaIdentifierFromCristinPersonId(cristinPerson)));
         nvaPerson.setName(cristinPerson.getSurname() + ", " + cristinPerson.getFirstName());
         nvaPerson.setAffiliation(createNvaAffiliationList(cristinPerson));
+        nvaPerson.setImageUrl(URI.create(cristinPerson.getPictureUrl()));
+        nvaPerson.setVerified(cristinPerson.getIdentifiedCristinPerson());
         return nvaPerson;
     }
 
@@ -44,14 +50,16 @@ public class NvaPersonBuilder {
 
     private static List<NvaAffiliation> createNvaAffiliationList(CristinPerson cristinPerson) {
         List<NvaAffiliation> nvaAffiliations = new ArrayList<>();
-        cristinPerson.getAffiliation().forEach(cristinAffiliation -> {
+        cristinPerson.getAffiliations().stream().filter(CristinAffiliation::getActive).forEach(cristinAffiliation -> {
             NvaAffiliation nvaAffiliation = new NvaAffiliation();
             nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
-            cristinAffiliation.getPosition()
-                .entrySet()
-                .stream()
-                .findFirst()
-                .ifPresent(optionalRole -> nvaAffiliation.setRole(optionalRole.getValue()));
+            if (cristinAffiliation.getPosition() != null) {
+                cristinAffiliation.getPosition()
+                    .entrySet()
+                    .stream()
+                    .findFirst()
+                    .ifPresent(stringStringEntry -> nvaAffiliation.setRole(stringStringEntry.getValue()));
+            }
 
             nvaAffiliations.add(nvaAffiliation);
         });

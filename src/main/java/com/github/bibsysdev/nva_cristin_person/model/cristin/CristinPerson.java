@@ -14,7 +14,7 @@ public class CristinPerson {
     public String surname;
     public Boolean identifiedCristinPerson;
     public String pictureUrl;
-    public List<CristinAffiliation> affiliation;
+    public List<CristinAffiliation> affiliations;
 
     public String getCristinPersonId() {
         return cristinPersonId;
@@ -56,13 +56,13 @@ public class CristinPerson {
         this.pictureUrl = pictureUrl;
     }
 
-    public List<CristinAffiliation> getAffiliation() {
-        return affiliation;
+    public List<CristinAffiliation> getAffiliations() {
+        return affiliations;
     }
 
-    public void setAffiliation(
-        List<CristinAffiliation> affiliation) {
-        this.affiliation = affiliation;
+    public void setAffiliations(
+        List<CristinAffiliation> affiliations) {
+        this.affiliations = affiliations;
     }
 
     @JsonIgnore

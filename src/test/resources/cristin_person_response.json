@@ -1,10 +1,10 @@
 {
-  "cristin_person_id" : "12345",
-  "first_name" : "Ola",
-  "surname" : "Nordmann",
+  "cristin_person_id" : "1111",
+  "first_name" : "Mattias",
+  "surname" : "Testperson1",
   "identified_cristin_person" : true,
-  "cristin_profile_url" : "https://app.cristin.no/persons/show.jsf?id=12345",
-  "picture_url" : "https://api.cristin.no/v2/persons/12345/picture",
+  "cristin_profile_url" : "https://app.cristin.no/persons/show.jsf?id=1111",
+  "picture_url" : "https://api.cristin.no/v2/persons/1111/picture",
   "affiliations" : [ {
     "institution" : {
       "cristin_institution_id" : "185",
@@ -27,10 +27,7 @@
       "cristin_unit_id" : "204.40.0.0",
       "url" : "https://api.cristin.no/v2/units/204.40.0.0"
     },
-    "active" : true,
-    "position" : {
-      "en" : "Professor"
-    }
+    "active" : true
   }, {
     "institution" : {
       "cristin_institution_id" : "222",

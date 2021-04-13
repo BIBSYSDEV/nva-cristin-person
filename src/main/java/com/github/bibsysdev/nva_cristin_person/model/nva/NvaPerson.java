@@ -15,7 +15,6 @@ public class NvaPerson {
     private List<NvaIdentifier> identifier;
     private String name;
     private List<NvaAffiliation> affiliation;
-
     private URI imageUrl;
     private Boolean verified;
 
