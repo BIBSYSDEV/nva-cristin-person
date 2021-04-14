@@ -54,9 +54,9 @@ public class CristinPersonsHandlerTest {
     private static final String INVALID_JSON = "This is not valid JSON!";
     private static final String EMPTY_LIST_STRING = "[]";
     private static final String ALLOW_ALL_ORIGIN = "*";
-    private static final String NVA_PERSON_RESPONSE_JSON = "nva_person_response.json";
-    private static final String CRISTIN_PERSON_RESPONSE = "cristin_person_response.json";
-    private static final String QUERY_NVA_PERSONS_RESPONSE_NO_HITS_JSON = "query_nva_persons_response_no_hits.json";
+    private static final String NVA_ONE_PERSON_RESPONSE_JSON_FILE = "nva_one_person_response.json";
+    private static final String NVA_PERSONS_RESPONSE_NO_HITS_JSON_FILE = "nva_persons_response_no_hits.json";
+    private static final String CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE = "cristin_one_person_response.json";
     private final ObjectMapper objectMapper = JsonUtils.objectMapper;
     private final Environment environment = new Environment();
     private CristinApiClient cristinApiClientStub;
@@ -187,14 +187,14 @@ public class CristinPersonsHandlerTest {
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
-        var expected = getReader(NVA_PERSON_RESPONSE_JSON);
+        var expected = getReader(NVA_ONE_PERSON_RESPONSE_JSON_FILE);
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));
     }
 
     @Test
     void returnNvaPersonWhenCallingNvaPersonBuilderMethodWithValidCristinPerson() throws Exception {
-        var expected = getReader(NVA_PERSON_RESPONSE_JSON);
-        var cristinGetPerson = getReader(CRISTIN_PERSON_RESPONSE);
+        var expected = getReader(NVA_ONE_PERSON_RESPONSE_JSON_FILE);
+        var cristinGetPerson = getReader(CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE);
         CristinPerson CristinPerson = attempt(
             () -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
         NvaPerson nvaPerson = new NvaPersonBuilder(CristinPerson).build();
@@ -208,7 +208,7 @@ public class CristinPersonsHandlerTest {
         cristinApiClientStub = spy(cristinApiClientStub);
         var emptyArray = new InputStreamReader(IoUtils.stringToStream(EMPTY_LIST_STRING), Charsets.UTF_8);
         doReturn(emptyArray).when(cristinApiClientStub).getQueryResponse(any());
-        var expected = getReader(QUERY_NVA_PERSONS_RESPONSE_NO_HITS_JSON);
+        var expected = getReader(NVA_PERSONS_RESPONSE_NO_HITS_JSON_FILE);
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));

@@ -15,7 +15,9 @@
     },
     {
       "id": "https://api.cristin.no/v2/units/222.57.4.0",
-      "role": "Professor"
+      "role" : {
+        "en" : "Professor"
+      }
     }
   ],
   "imageUrl": "https://api.cristin.no/v2/persons/1111/picture",

@@ -10,8 +10,6 @@ import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class NvaPersonBuilder {
 
@@ -54,11 +52,7 @@ public class NvaPersonBuilder {
             NvaAffiliation nvaAffiliation = new NvaAffiliation();
             nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
             if (cristinAffiliation.getPosition() != null) {
-                cristinAffiliation.getPosition()
-                    .entrySet()
-                    .stream()
-                    .findFirst()
-                    .ifPresent(stringStringEntry -> nvaAffiliation.setRole(stringStringEntry.getValue()));
+                nvaAffiliation.setRole(cristinAffiliation.getPosition());
             }
 
             nvaAffiliations.add(nvaAffiliation);

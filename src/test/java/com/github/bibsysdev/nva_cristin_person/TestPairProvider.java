@@ -9,11 +9,11 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 public class TestPairProvider implements ArgumentsProvider {
 
-    public static final String QUERY_NVA_PERSONS_RESPONSE_JSON = IoUtils.stringFromResources(
-        Path.of("query_nva_persons_response.json"));
+    public static final String NVA_PERSONS_RESPONSE_JSON_FILE = IoUtils.stringFromResources(
+        Path.of("nva_persons_response.json"));
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-        return Stream.of(Arguments.of(QUERY_NVA_PERSONS_RESPONSE_JSON));
+        return Stream.of(Arguments.of(NVA_PERSONS_RESPONSE_JSON_FILE));
     }
 }

@@ -3,12 +3,13 @@ package com.github.bibsysdev.nva_cristin_person.model.nva;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.net.URI;
+import java.util.Map;
 
 public class NvaAffiliation {
 
     public URI id;
     @JsonInclude(NON_NULL)
-    public String role;
+    public Map<String, String> role;
 
     public URI getId() {
         return id;
@@ -18,11 +19,11 @@ public class NvaAffiliation {
         this.id = id;
     }
 
-    public String getRole() {
+    public Map<String, String> getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Map<String, String> role) {
         this.role = role;
     }
 }
