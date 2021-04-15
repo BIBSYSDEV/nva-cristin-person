@@ -66,7 +66,7 @@ public class CristinPerson {
     }
 
     @JsonIgnore
-    public boolean hasValidContent() {
+    public boolean hasRequiredFields() {
         return StringUtils.isNotBlank(cristinPersonId)
             && StringUtils.isNotBlank(firstName)
             && StringUtils.isNotBlank(surname);

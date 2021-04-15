@@ -106,20 +106,27 @@ public class OneCristinPersonHandlerTest {
 
         doThrow(new FileNotFoundException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
-        GatewayResponse<NvaPerson> nextResponse = sendQueryWithId(DEFAULT_ID);
+        response = sendQueryWithId(DEFAULT_ID);
 
-        assertEquals(HttpURLConnection.HTTP_BAD_GATEWAY, nextResponse.getStatusCode());
-        assertEquals(APPLICATION_PROBLEM_JSON, nextResponse.getHeaders().get(HttpHeaders.CONTENT_TYPE));
+        assertEquals(HttpURLConnection.HTTP_BAD_GATEWAY, response.getStatusCode());
+        assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
+
+        doThrow(new BadGatewayException("")).when(cristinApiClientStub).queryOneCristinPerson(any(), any());
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
+        response = sendQueryWithId(DEFAULT_ID);
+
+        assertEquals(HttpURLConnection.HTTP_BAD_GATEWAY, response.getStatusCode());
+        assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
     }
 
     @Test
     void callingHasValidContentOnCristinPersonOnlyReturnsTrueWhenAllRequiredDataArePresent() {
         CristinPerson cristinPerson = new CristinPerson();
-        assertFalse(cristinPerson.hasValidContent());
+        assertFalse(cristinPerson.hasRequiredFields());
         cristinPerson.setCristinPersonId("1234");
         cristinPerson.setFirstName("Mattias");
         cristinPerson.setSurname("Testesen");
-        assertTrue(cristinPerson.hasValidContent());
+        assertTrue(cristinPerson.hasRequiredFields());
     }
 
     private GatewayResponse<NvaPerson> sendQueryWithId(String id) throws IOException {

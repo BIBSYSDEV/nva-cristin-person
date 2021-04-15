@@ -185,7 +185,8 @@ public class CristinPersonsHandlerTest {
     void returnNvaPersonWhenCallingNvaPersonBuilderMethodWithValidCristinPerson() throws Exception {
         var expected = getReader(NVA_ONE_PERSON_JSON_FILE);
         var cristinGetPerson = getReader(CRISTIN_ONE_PERSON_JSON_FILE);
-        CristinPerson CristinPerson = attempt(() -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
+        CristinPerson CristinPerson = attempt(
+            () -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
         NvaPerson nvaPerson = new NvaPersonBuilder(CristinPerson).build();
         nvaPerson.setContext(PERSON_LOOKUP_CONTEXT_URL);
         var actual = attempt(() -> objectMapper.writeValueAsString(nvaPerson)).get();

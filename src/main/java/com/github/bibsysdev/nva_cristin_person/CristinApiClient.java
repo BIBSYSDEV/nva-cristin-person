@@ -83,7 +83,7 @@ public class CristinApiClient {
      */
     public NvaPerson queryOneCristinPerson(String id, String language) throws BadGatewayException {
         CristinPerson cristinPerson = attemptToGetCristinPerson(id, language);
-        if (cristinPerson == null || !cristinPerson.hasValidContent()) {
+        if (cristinPerson == null || !cristinPerson.hasRequiredFields()) {
             return new EmptyNvaPerson();
         } else {
             NvaPerson nvaPerson = new NvaPersonBuilder(cristinPerson).build();
@@ -159,7 +159,7 @@ public class CristinApiClient {
 
     private List<NvaPerson> transformCristinPersonsToNvaPersons(List<CristinPerson> cristinPersons) {
         return cristinPersons.stream()
-            .filter(CristinPerson::hasValidContent)
+            .filter(CristinPerson::hasRequiredFields)
             .map(cristinPerson -> new NvaPersonBuilder(cristinPerson).build())
             .collect(Collectors.toList());
     }
