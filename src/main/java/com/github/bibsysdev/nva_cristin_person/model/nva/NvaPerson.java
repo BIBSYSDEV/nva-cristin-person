@@ -1,14 +1,20 @@
 package com.github.bibsysdev.nva_cristin_person.model.nva;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.github.bibsysdev.nva_cristin_person.PersonsWrapper.CONTEXT;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.net.URI;
 import java.util.List;
 
-@JsonInclude(NON_NULL)
+@JsonInclude(ALWAYS)
+@JsonPropertyOrder("@context")
 public class NvaPerson {
 
     @JsonInclude(NON_NULL)
+    @JsonProperty(CONTEXT)
     private String context;
     private URI id;
     private String type;

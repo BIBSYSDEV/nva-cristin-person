@@ -1,31 +1,28 @@
 package com.github.bibsysdev.nva_cristin_person;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.List;
 
-@JsonPropertyOrder({"@context"})
+@JsonInclude(ALWAYS)
+@JsonPropertyOrder("@context")
 public class PersonsWrapper {
 
     public static final String PERSON_SEARCH_CONTEXT_URL = "https://example.org/person-search-context.json";
+    public static final String CONTEXT = "@context";
 
-    @JsonProperty("@context")
+    @JsonProperty(CONTEXT)
     private String context = PERSON_SEARCH_CONTEXT_URL;
-    @JsonProperty
     private URI id;
-    @JsonProperty
     private Integer size;
-    @JsonProperty
     private String searchString;
-    @JsonProperty
     private Long processingTime;
-    @JsonProperty
     private Integer firstRecord;
-    @JsonProperty
     private String nextResults;
-    @JsonProperty
     private List<NvaPerson> hits;
 
     public String getContext() {

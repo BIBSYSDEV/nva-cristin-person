@@ -5,7 +5,7 @@
   "searchString": "name=Mattias",
   "processingTime": 1000,
   "firstRecord": 0,
-  "nextResults": "",
+  "nextResults": null,
   "hits": [
     {
       "id": "https://api.dev.nva.aws.unit.no/person/1111",
@@ -23,8 +23,8 @@
         },
         {
           "id": "https://api.cristin.no/v2/units/222.57.4.0",
-          "role" : {
-            "en" : "Professor"
+          "role": {
+            "en": "Professor"
           }
         }
       ],
@@ -47,8 +47,8 @@
         },
         {
           "id": "https://api.cristin.no/v2/units/222.57.4.0",
-          "role" : {
-            "en" : "Professor"
+          "role": {
+            "en": "Professor"
           }
         }
       ],
@@ -71,8 +71,8 @@
         },
         {
           "id": "https://api.cristin.no/v2/units/222.57.4.0",
-          "role" : {
-            "en" : "Professor"
+          "role": {
+            "en": "Professor"
           }
         }
       ],
@@ -95,8 +95,8 @@
         },
         {
           "id": "https://api.cristin.no/v2/units/222.57.4.0",
-          "role" : {
-            "en" : "Professor"
+          "role": {
+            "en": "Professor"
           }
         }
       ],
@@ -119,8 +119,8 @@
         },
         {
           "id": "https://api.cristin.no/v2/units/222.57.4.0",
-          "role" : {
-            "en" : "Professor"
+          "role": {
+            "en": "Professor"
           }
         }
       ],

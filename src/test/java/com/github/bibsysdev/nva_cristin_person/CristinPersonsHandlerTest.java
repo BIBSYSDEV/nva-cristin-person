@@ -50,13 +50,13 @@ public class CristinPersonsHandlerTest {
     private static final String LANGUAGE_NB = "nb";
     private static final String LANGUAGE_INVALID = "invalid";
     private static final String NAME_MATTIAS = "Mattias";
-    private static final String NAME_ILLEGAL_CHARACTERS = "abc123- ,-?";
     private static final String INVALID_JSON = "This is not valid JSON!";
     private static final String EMPTY_LIST_STRING = "[]";
     private static final String ALLOW_ALL_ORIGIN = "*";
-    private static final String NVA_ONE_PERSON_RESPONSE_JSON_FILE = "nva_one_person_response.json";
-    private static final String NVA_PERSONS_RESPONSE_NO_HITS_JSON_FILE = "nva_persons_response_no_hits.json";
-    private static final String CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE = "cristin_one_person_response.json";
+    private static final String NVA_ONE_PERSON_JSON_FILE = "nva_one_person.json";
+    private static final String NVA_PERSONS_NON_ENRICHED_JSON_FILE = "nva_persons_non_enriched.json";
+    private static final String NVA_PERSONS_NO_HITS_JSON_FILE = "nva_persons_no_hits.json";
+    private static final String CRISTIN_ONE_PERSON_JSON_FILE = "cristin_one_person.json";
     private final ObjectMapper objectMapper = JsonUtils.objectMapper;
     private final Environment environment = new Environment();
     private CristinApiClient cristinApiClientStub;
@@ -130,17 +130,6 @@ public class CristinPersonsHandlerTest {
     }
 
     @Test
-    public void handlerReturnsBadRequestWhenReceivingNameQueryParamWithIllegalCharacters() throws Exception {
-        InputStream input = requestWithQueryParameters(Map.of(NAME_QUERY_PARAMETER, NAME_ILLEGAL_CHARACTERS));
-        handler.handleRequest(input, output, context);
-        GatewayResponse<PersonsWrapper> response = GatewayResponse.fromOutputStream(output);
-
-        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getStatusCode());
-        assertEquals(APPLICATION_PROBLEM_JSON, response.getHeaders().get(HttpHeaders.CONTENT_TYPE));
-        assertTrue(response.getBody().contains(CristinPersonsHandler.NAME_MISSING_EXCEPTION_MESSAGE));
-    }
-
-    @Test
     public void handlerReturnsBadRequestWhenReceivingInvalidLanguageQueryParam() throws Exception {
         InputStream input = requestWithQueryParameters(
             Map.of(NAME_QUERY_PARAMETER, NAME_MATTIAS, LANGUAGE_KEY, LANGUAGE_INVALID));
@@ -187,19 +176,20 @@ public class CristinPersonsHandlerTest {
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
-        var expected = getReader(NVA_ONE_PERSON_RESPONSE_JSON_FILE);
+        var expected = getReader(NVA_PERSONS_NON_ENRICHED_JSON_FILE);
+
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));
     }
 
     @Test
     void returnNvaPersonWhenCallingNvaPersonBuilderMethodWithValidCristinPerson() throws Exception {
-        var expected = getReader(NVA_ONE_PERSON_RESPONSE_JSON_FILE);
-        var cristinGetPerson = getReader(CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE);
-        CristinPerson CristinPerson = attempt(
-            () -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
+        var expected = getReader(NVA_ONE_PERSON_JSON_FILE);
+        var cristinGetPerson = getReader(CRISTIN_ONE_PERSON_JSON_FILE);
+        CristinPerson CristinPerson = attempt(() -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
         NvaPerson nvaPerson = new NvaPersonBuilder(CristinPerson).build();
         nvaPerson.setContext(PERSON_LOOKUP_CONTEXT_URL);
         var actual = attempt(() -> objectMapper.writeValueAsString(nvaPerson)).get();
+
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(actual));
     }
 
@@ -208,7 +198,7 @@ public class CristinPersonsHandlerTest {
         cristinApiClientStub = spy(cristinApiClientStub);
         var emptyArray = new InputStreamReader(IoUtils.stringToStream(EMPTY_LIST_STRING), Charsets.UTF_8);
         doReturn(emptyArray).when(cristinApiClientStub).getQueryResponse(any());
-        var expected = getReader(NVA_PERSONS_RESPONSE_NO_HITS_JSON_FILE);
+        var expected = getReader(NVA_PERSONS_NO_HITS_JSON_FILE);
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
         assertEquals(objectMapper.readTree(expected), objectMapper.readTree(response.getBody()));

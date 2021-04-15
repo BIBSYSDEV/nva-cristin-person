@@ -34,8 +34,8 @@ import org.junit.jupiter.api.Test;
 public class OneCristinPersonHandlerTest {
 
     private static final String EMPTY_JSON = "{}";
-    private static final String CRISTIN_ONE_PERSON_RESPONSE_INVALID_ID_JSON_FILE = "cristin_one_person_response_invalid_id.json";
-    private static final String CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE = "cristin_one_person_response.json";
+    private static final String CRISTIN_ONE_PERSON_INVALID_ID_JSON_FILE = "cristin_one_person_invalid_id.json";
+    private static final String CRISTIN_ONE_PERSON_JSON_FILE = "cristin_one_person.json";
     private static final String INVALID_ID = "Not an ID";
     private static final String DEFAULT_ID = "9999";
     private final Environment environment = new Environment();
@@ -57,7 +57,7 @@ public class OneCristinPersonHandlerTest {
     void handlerReturnsEmptyJsonWhenIdIsNotFound() throws Exception {
         cristinApiClientStub = spy(cristinApiClientStub);
 
-        doReturn(getReader(CRISTIN_ONE_PERSON_RESPONSE_INVALID_ID_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
+        doReturn(getReader(CRISTIN_ONE_PERSON_INVALID_ID_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
         assertEquals(objectMapper.readTree(EMPTY_JSON), objectMapper.readTree(response.getBody()));
@@ -73,7 +73,7 @@ public class OneCristinPersonHandlerTest {
     void handlerReturnsNvaPersonFromTransformedCristinPersonWhenIdIsFound() throws Exception {
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
         assertEquals(
-            objectMapper.readTree(getReader(CRISTIN_ONE_PERSON_RESPONSE_JSON_FILE)),
+            objectMapper.readTree(getReader(CRISTIN_ONE_PERSON_JSON_FILE)),
             objectMapper.readTree(response.getBody())
         );
     }

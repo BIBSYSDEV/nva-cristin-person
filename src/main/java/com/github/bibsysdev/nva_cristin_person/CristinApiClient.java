@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public class CristinApiClient {
 
-    static final String PERSON_LOOKUP_CONTEXT_URL = "https://example.org/project-context.json";
+    static final String PERSON_LOOKUP_CONTEXT_URL = "https://example.org/person-context.json";
     private static final Logger logger = LoggerFactory.getLogger(CristinApiClient.class);
     private static final Environment ENVIRONMENT = new Environment();
     static final String BASE_URL = ENVIRONMENT.readEnv("BASE_URL");
@@ -66,7 +66,7 @@ public class CristinApiClient {
         personsWrapper.setProcessingTime(calculateProcessingTime(startRequestTime, endRequestTime));
         // TODO: NP-2385: Use Link header / Pagination data from Cristin response in the next two values
         personsWrapper.setFirstRecord(0);
-        personsWrapper.setNextResults(""); // TODO: Change to URI
+        personsWrapper.setNextResults(null); // TODO: Change to URI
         personsWrapper.setHits(transformCristinPersonsToNvaPersons(enrichedPersons));
         // TODO: NP-2424: Return fields with empty values instead of null to avoid "undefined" in frontend
         return personsWrapper;

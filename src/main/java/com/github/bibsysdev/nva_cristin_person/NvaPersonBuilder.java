@@ -34,7 +34,11 @@ public class NvaPersonBuilder {
         nvaPerson.setIdentifier(List.of(createNvaIdentifierFromCristinPersonId(cristinPerson)));
         nvaPerson.setName(cristinPerson.getSurname() + ", " + cristinPerson.getFirstName());
         nvaPerson.setAffiliation(createNvaAffiliationList(cristinPerson));
-        nvaPerson.setImageUrl(URI.create(cristinPerson.getPictureUrl()));
+
+        if (cristinPerson.getPictureUrl() != null) {
+            nvaPerson.setImageUrl(URI.create(cristinPerson.getPictureUrl()));
+        }
+
         nvaPerson.setVerified(cristinPerson.getIdentifiedCristinPerson());
         return nvaPerson;
     }
@@ -48,15 +52,17 @@ public class NvaPersonBuilder {
 
     private static List<NvaAffiliation> createNvaAffiliationList(CristinPerson cristinPerson) {
         List<NvaAffiliation> nvaAffiliations = new ArrayList<>();
-        cristinPerson.getAffiliations().stream().filter(CristinAffiliation::getActive).forEach(cristinAffiliation -> {
-            NvaAffiliation nvaAffiliation = new NvaAffiliation();
-            nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
-            if (cristinAffiliation.getPosition() != null) {
-                nvaAffiliation.setRole(cristinAffiliation.getPosition());
-            }
+        if (cristinPerson.getAffiliations() != null) {
+            cristinPerson.getAffiliations().stream().filter(CristinAffiliation::getActive).forEach(cristinAffiliation -> {
+                NvaAffiliation nvaAffiliation = new NvaAffiliation();
+                nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
+                if (cristinAffiliation.getPosition() != null) {
+                    nvaAffiliation.setRole(cristinAffiliation.getPosition());
+                }
 
-            nvaAffiliations.add(nvaAffiliation);
-        });
+                nvaAffiliations.add(nvaAffiliation);
+            });
+        }
         return nvaAffiliations;
     }
 }

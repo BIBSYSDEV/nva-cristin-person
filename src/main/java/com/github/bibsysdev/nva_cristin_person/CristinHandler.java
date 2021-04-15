@@ -12,7 +12,7 @@ public abstract class CristinHandler<I, O> extends ApiGatewayHandler<I, O> {
     protected static final String LANGUAGE_QUERY_PARAMETER = "language";
     protected static final String LANGUAGE_INVALID_ERROR_MESSAGE = "Parameter 'language' has invalid value";
     protected static final String DEFAULT_LANGUAGE_CODE = "nb";
-    private static final Set<String> VALID_LANGUAGE_CODES = Set.of("en", "nb");
+    private static final Set<String> VALID_LANGUAGE_CODES = Set.of("en", "nb", "nn");
 
     public CristinHandler(Class<I> iclass, Environment environment) {
         super(iclass, environment);

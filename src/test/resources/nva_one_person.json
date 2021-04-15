@@ -15,8 +15,8 @@
     },
     {
       "id": "https://api.cristin.no/v2/units/222.57.4.0",
-      "role" : {
-        "en" : "Professor"
+      "role": {
+        "en": "Professor"
       }
     }
   ],
