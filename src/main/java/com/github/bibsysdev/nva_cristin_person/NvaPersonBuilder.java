@@ -56,7 +56,7 @@ public class NvaPersonBuilder {
             cristinPerson.getAffiliations().stream().filter(CristinAffiliation::getActive).forEach(cristinAffiliation -> {
                 NvaAffiliation nvaAffiliation = new NvaAffiliation();
                 nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
-                if (cristinAffiliation.getPosition() != null) {
+                if (cristinAffiliation.getPosition() != null && !cristinAffiliation.getPosition().isEmpty()) {
                     nvaAffiliation.setRole(cristinAffiliation.getPosition());
                 }
 

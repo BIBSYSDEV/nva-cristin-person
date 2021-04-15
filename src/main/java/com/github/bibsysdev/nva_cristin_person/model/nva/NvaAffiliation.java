@@ -1,6 +1,6 @@
 package com.github.bibsysdev.nva_cristin_person.model.nva;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.net.URI;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
 public class NvaAffiliation {
 
     public URI id;
-    @JsonInclude(NON_NULL)
+    @JsonInclude(ALWAYS)
     public Map<String, String> role;
 
     public URI getId() {

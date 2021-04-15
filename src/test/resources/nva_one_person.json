@@ -11,7 +11,8 @@
   "name": "Testperson1, Mattias",
   "affiliation": [
     {
-      "id": "https://api.cristin.no/v2/units/204.40.0.0"
+      "id": "https://api.cristin.no/v2/units/204.40.0.0",
+      "role": null
     },
     {
       "id": "https://api.cristin.no/v2/units/222.57.4.0",

@@ -1,0 +1,15 @@
+{
+  "@context": "https://example.org/person-context.json",
+  "id": "https://api.dev.nva.aws.unit.no/person/123456",
+  "type": "Person",
+  "identifier": [
+    {
+      "type": "CristinIdentifier",
+      "value": "123456"
+    }
+  ],
+  "name": "Testingperson, Testman",
+  "affiliation": [],
+  "imageUrl": null,
+  "verified": false
+}
