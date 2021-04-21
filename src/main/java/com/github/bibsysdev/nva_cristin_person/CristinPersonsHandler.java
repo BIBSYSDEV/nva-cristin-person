@@ -8,7 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import nva.commons.apigateway.RequestInfo;
 import nva.commons.apigateway.exceptions.ApiGatewayException;
 import nva.commons.core.Environment;
+import nva.commons.core.JacocoGenerated;
 
+@JacocoGenerated
 public class CristinPersonsHandler extends CristinHandler<Void, PersonsWrapper> {
 
     protected static final String NAME_MISSING_EXCEPTION_MESSAGE = "Parameter 'name' is missing.";

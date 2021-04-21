@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import nva.commons.apigateway.RequestInfo;
 import nva.commons.apigateway.exceptions.ApiGatewayException;
 import nva.commons.core.Environment;
+import nva.commons.core.JacocoGenerated;
 
+@JacocoGenerated
 public class OneCristinPersonHandler extends CristinHandler<Void, NvaPerson> {
 
     public static final String INVALID_PATH_PARAMETER_FOR_ID_EXCEPTION_MESSAGE = "Path parameter for id must be number";

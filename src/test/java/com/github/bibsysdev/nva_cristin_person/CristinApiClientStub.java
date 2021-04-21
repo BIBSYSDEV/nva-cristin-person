@@ -2,7 +2,9 @@ package com.github.bibsysdev.nva_cristin_person;
 
 import java.io.InputStreamReader;
 import java.net.URL;
+import nva.commons.core.JacocoGenerated;
 
+@JacocoGenerated
 public class CristinApiClientStub extends CristinApiClient {
 
     private static final String CRISTIN_PERSONS_JSON_FILE = "/cristin_persons.json";

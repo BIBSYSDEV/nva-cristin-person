@@ -17,18 +17,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import nva.commons.core.Environment;
+import nva.commons.core.JacocoGenerated;
 import nva.commons.core.JsonUtils;
 import nva.commons.core.attempt.Failure;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@JacocoGenerated
 public class CristinApiClient {
 
-    static final String PERSON_LOOKUP_CONTEXT_URL = "https://example.org/person-context.json";
+    protected static final String PERSON_LOOKUP_CONTEXT_URL = "https://example.org/person-context.json";
     private static final Logger logger = LoggerFactory.getLogger(CristinApiClient.class);
     private static final Environment ENVIRONMENT = new Environment();
-    static final String BASE_URL = ENVIRONMENT.readEnv("BASE_URL");
+    protected static final String BASE_URL = ENVIRONMENT.readEnv("BASE_URL");
     private static final String CRISTIN_API_HOST = ENVIRONMENT.readEnv("CRISTIN_API_HOST");
     private static final ObjectMapper OBJECT_MAPPER = JsonUtils.objectMapper;
 

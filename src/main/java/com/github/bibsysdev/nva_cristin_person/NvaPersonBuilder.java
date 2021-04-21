@@ -10,7 +10,9 @@ import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import nva.commons.core.JacocoGenerated;
 
+@JacocoGenerated
 public class NvaPersonBuilder {
 
     private static final String PERSON_TYPE = "Person";

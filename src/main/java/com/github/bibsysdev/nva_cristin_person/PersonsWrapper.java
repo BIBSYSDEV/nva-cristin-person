@@ -7,9 +7,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.List;
+import nva.commons.core.JacocoGenerated;
 
 @JsonInclude(ALWAYS)
 @JsonPropertyOrder("@context")
+@JacocoGenerated
 public class PersonsWrapper {
 
     public static final String PERSON_SEARCH_CONTEXT_URL = "https://example.org/person-search-context.json";
