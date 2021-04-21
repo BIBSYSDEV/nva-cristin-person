@@ -17,7 +17,7 @@ Lambda for fetching person data from the [Cristin API](https://api.cristin.no/v2
 
 #### Response
 
-Returns a JSON array containing up to 10 persons, or an empty JSON array if no persons are found.
+Returns a JSON array containing a number of persons, or an empty JSON array if no persons are found.
 
 #### HTTP Status Codes
 
