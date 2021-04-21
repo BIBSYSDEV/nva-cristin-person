@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person.model.nva;
+package com.github.bibsysdev.nva.cristin.person.model.nva;
 
 public class NvaIdentifier {
 

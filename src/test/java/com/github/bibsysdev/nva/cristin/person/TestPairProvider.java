@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

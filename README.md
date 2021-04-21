@@ -23,4 +23,4 @@ Returns a JSON array containing up to 10 persons, or an empty JSON array if no p
 
 * 200 - Ok, returns 0-10 persons.
 * 400 - Bad request, returned if the parameters are invalid.
-* 500 - Internal server error, returned if a problem is encountered retrieving project data.
+* 500 - Internal server error, returned if a problem is encountered retrieving person data.

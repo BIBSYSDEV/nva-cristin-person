@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person.model.cristin;
+package com.github.bibsysdev.nva.cristin.person.model.cristin;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

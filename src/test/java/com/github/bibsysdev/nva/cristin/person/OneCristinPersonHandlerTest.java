@@ -1,7 +1,7 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
-import static com.github.bibsysdev.nva_cristin_person.OneCristinPersonHandler.DEFAULT_LANGUAGE_CODE;
-import static com.github.bibsysdev.nva_cristin_person.OneCristinPersonHandler.LANGUAGE_QUERY_PARAMETER;
+import static com.github.bibsysdev.nva.cristin.person.OneCristinPersonHandler.DEFAULT_LANGUAGE_CODE;
+import static com.github.bibsysdev.nva.cristin.person.OneCristinPersonHandler.LANGUAGE_QUERY_PARAMETER;
 import static nva.commons.apigateway.ApiGatewayHandler.APPLICATION_PROBLEM_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,8 +14,8 @@ import static org.mockito.Mockito.spy;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.bibsysdev.nva_cristin_person.model.cristin.CristinPerson;
-import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.cristin.CristinPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,6 +32,7 @@ import nva.commons.core.ioutils.IoUtils;
 import org.apache.commons.codec.Charsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class OneCristinPersonHandlerTest {
 
@@ -60,7 +61,7 @@ public class OneCristinPersonHandlerTest {
 
     @Test
     void handlerReturnsEmptyJsonWhenIdIsNotFound() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doReturn(getReader(CRISTIN_ONE_PERSON_INVALID_ID_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
@@ -76,7 +77,7 @@ public class OneCristinPersonHandlerTest {
 
     @Test
     void handlerReturnsNvaPersonWithNulledFieldsIfTheyAreMissingFromCristinResponse() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doReturn(getReader(CRISTIN_ONE_PERSON_MISSING_FIELDS_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
@@ -96,7 +97,7 @@ public class OneCristinPersonHandlerTest {
 
     @Test
     void handlerReturnsBadGatewayExceptionWhenFetchFromBackendFails() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);

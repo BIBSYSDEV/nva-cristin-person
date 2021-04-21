@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
 import java.io.InputStreamReader;
 import java.net.URL;

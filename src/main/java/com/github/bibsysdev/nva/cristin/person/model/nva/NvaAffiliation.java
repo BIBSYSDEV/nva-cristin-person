@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person.model.nva;
+package com.github.bibsysdev.nva.cristin.person.model.nva;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import com.fasterxml.jackson.annotation.JsonInclude;

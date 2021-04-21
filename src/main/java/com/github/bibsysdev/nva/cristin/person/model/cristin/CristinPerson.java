@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person.model.cristin;
+package com.github.bibsysdev.nva.cristin.person.model.cristin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -67,6 +67,9 @@ public class CristinPerson {
         this.affiliations = affiliations;
     }
 
+    /**
+     * Returns whether or not the minimum required fields for a valid Cristin Person are present.
+     */
     @JsonIgnore
     public boolean hasRequiredFields() {
         return StringUtils.isNotBlank(cristinPersonId)

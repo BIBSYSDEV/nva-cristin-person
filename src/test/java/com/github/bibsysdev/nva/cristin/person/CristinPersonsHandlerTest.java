@@ -1,9 +1,9 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
-import static com.github.bibsysdev.nva_cristin_person.CristinApiClient.PERSON_LOOKUP_CONTEXT_URL;
-import static com.github.bibsysdev.nva_cristin_person.CristinHandler.LANGUAGE_INVALID_ERROR_MESSAGE;
-import static com.github.bibsysdev.nva_cristin_person.CristinPersonsHandler.LANGUAGE_QUERY_PARAMETER;
-import static com.github.bibsysdev.nva_cristin_person.CristinPersonsHandler.NAME_QUERY_PARAMETER;
+import static com.github.bibsysdev.nva.cristin.person.CristinApiClient.PERSON_LOOKUP_CONTEXT_URL;
+import static com.github.bibsysdev.nva.cristin.person.CristinHandler.LANGUAGE_INVALID_ERROR_MESSAGE;
+import static com.github.bibsysdev.nva.cristin.person.CristinPersonsHandler.LANGUAGE_QUERY_PARAMETER;
+import static com.github.bibsysdev.nva.cristin.person.CristinPersonsHandler.NAME_QUERY_PARAMETER;
 import static nva.commons.apigateway.ApiGatewayHandler.APPLICATION_PROBLEM_JSON;
 import static nva.commons.core.attempt.Try.attempt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +17,8 @@ import static org.mockito.Mockito.spy;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.bibsysdev.nva_cristin_person.model.cristin.CristinPerson;
-import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.cristin.CristinPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,6 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.mockito.Mockito;
 
 public class CristinPersonsHandlerTest {
 
@@ -72,7 +73,7 @@ public class CristinPersonsHandlerTest {
 
     @Test
     public void handlerIgnoresErrorsWhenTryingToEnrichPersonInformation() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
@@ -83,7 +84,7 @@ public class CristinPersonsHandlerTest {
 
     @Test
     public void handlerThrowsInternalErrorWhenQueryingPersonsFails() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).queryAndEnrichPersons(any(), any());
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
@@ -172,7 +173,7 @@ public class CristinPersonsHandlerTest {
 
     @Test
     void handlerReturnsNonEnrichedBodyWhenEnrichingFails() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doThrow(new IOException()).when(cristinApiClientStub).getPerson(any(), any());
         handler = new CristinPersonsHandler(cristinApiClientStub, environment);
         GatewayResponse<PersonsWrapper> response = sendDefaultQuery();
@@ -185,9 +186,9 @@ public class CristinPersonsHandlerTest {
     void returnNvaPersonWhenCallingNvaPersonBuilderMethodWithValidCristinPerson() throws Exception {
         var expected = getReader(NVA_ONE_PERSON_JSON_FILE);
         var cristinGetPerson = getReader(CRISTIN_ONE_PERSON_JSON_FILE);
-        CristinPerson CristinPerson = attempt(
+        CristinPerson cristinPerson = attempt(
             () -> objectMapper.readValue(cristinGetPerson, CristinPerson.class)).get();
-        NvaPerson nvaPerson = new NvaPersonBuilder(CristinPerson).build();
+        NvaPerson nvaPerson = new NvaPersonBuilder(cristinPerson).build();
         nvaPerson.setContext(PERSON_LOOKUP_CONTEXT_URL);
         var actual = attempt(() -> objectMapper.writeValueAsString(nvaPerson)).get();
 
@@ -196,7 +197,7 @@ public class CristinPersonsHandlerTest {
 
     @Test
     void handlerReturnsPersonsWrapperWithAllMetadataButEmptyHitsArrayWhenNoMatchesAreFoundInCristin() throws Exception {
-        cristinApiClientStub = spy(cristinApiClientStub);
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         var emptyArray = new InputStreamReader(IoUtils.stringToStream(EMPTY_LIST_STRING), Charsets.UTF_8);
         doReturn(emptyArray).when(cristinApiClientStub).getQueryResponse(any());
         var expected = getReader(NVA_PERSONS_NO_HITS_JSON_FILE);

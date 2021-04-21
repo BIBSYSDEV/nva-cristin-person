@@ -42,7 +42,7 @@ tasks.withType(Checkstyle) {
 }
 
 project.ext {
-    nvaCommonsVersion = '1.5.2'
+    nvaCommonsVersion = '1.5.10'
     jacksonVersion = '2.12.1'
     jupiterVersion = '5.7.1'
 }

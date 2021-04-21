@@ -1,4 +1,4 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
 import static nva.commons.core.attempt.Try.attempt;
 import java.util.Optional;

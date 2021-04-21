@@ -1,12 +1,12 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
-import static com.github.bibsysdev.nva_cristin_person.UriUtils.buildUri;
+import static com.github.bibsysdev.nva.cristin.person.UriUtils.buildUri;
 import static java.util.Arrays.asList;
 import static nva.commons.core.attempt.Try.attempt;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.bibsysdev.nva_cristin_person.model.cristin.CristinPerson;
-import com.github.bibsysdev.nva_cristin_person.model.nva.EmptyNvaPerson;
-import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.cristin.CristinPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.EmptyNvaPerson;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;

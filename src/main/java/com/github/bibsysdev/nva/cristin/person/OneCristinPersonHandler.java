@@ -1,8 +1,8 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
 import static nva.commons.core.attempt.Try.attempt;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
 import java.net.HttpURLConnection;
 import nva.commons.apigateway.RequestInfo;
 import nva.commons.apigateway.exceptions.ApiGatewayException;

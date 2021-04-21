@@ -1,10 +1,10 @@
-package com.github.bibsysdev.nva_cristin_person;
+package com.github.bibsysdev.nva.cristin.person;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.bibsysdev.nva_cristin_person.model.nva.NvaPerson;
+import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
 import java.net.URI;
 import java.util.List;
 import nva.commons.core.JacocoGenerated;
