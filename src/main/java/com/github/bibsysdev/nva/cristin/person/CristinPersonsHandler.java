@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import nva.commons.apigateway.RequestInfo;
 import nva.commons.apigateway.exceptions.ApiGatewayException;
+import nva.commons.apigateway.exceptions.BadRequestException;
 import nva.commons.core.Environment;
 import nva.commons.core.JacocoGenerated;
 
@@ -50,8 +51,8 @@ public class CristinPersonsHandler extends CristinHandler<Void, PersonsWrapper> 
     }
 
     private String getValidName(RequestInfo requestInfo) throws BadRequestException {
-        return getQueryParam(requestInfo, NAME_QUERY_PARAMETER).orElseThrow(
-            () -> new BadRequestException(NAME_MISSING_EXCEPTION_MESSAGE));
+        return getQueryParam(requestInfo, NAME_QUERY_PARAMETER)
+            .orElseThrow(() -> new BadRequestException(NAME_MISSING_EXCEPTION_MESSAGE));
     }
 
     private PersonsWrapper getTransformedCristinPersonsUsingWrapperObject(String language, String name) {

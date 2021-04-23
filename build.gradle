@@ -3,7 +3,7 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id 'jacoco'
-    id 'nebula.lint' version '16.17.0'
+    id 'nebula.lint' version '16.23.0'
 }
 
 group 'com.github.bibsysdev'
@@ -22,7 +22,6 @@ gradleLint {
 }
 
 pmd {
-    toolVersion = '6.20.0'
     ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
     ruleSets = []
     ignoreFailures = false
@@ -42,7 +41,7 @@ tasks.withType(Checkstyle) {
 }
 
 project.ext {
-    nvaCommonsVersion = '1.5.10'
+    nvaCommonsVersion = '1.5.14'
     jacksonVersion = '2.12.1'
     jupiterVersion = '5.7.1'
 }

@@ -1,6 +1,7 @@
 package com.github.bibsysdev.nva.cristin.person;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
+import static com.github.bibsysdev.nva.cristin.person.PersonsWrapper.CONTEXT;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,7 +11,7 @@ import java.util.List;
 import nva.commons.core.JacocoGenerated;
 
 @JsonInclude(ALWAYS)
-@JsonPropertyOrder("@context")
+@JsonPropertyOrder(CONTEXT)
 @JacocoGenerated
 public class PersonsWrapper {
 

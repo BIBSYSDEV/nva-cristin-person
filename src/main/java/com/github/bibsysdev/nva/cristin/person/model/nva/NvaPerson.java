@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @JsonInclude(ALWAYS)
-@JsonPropertyOrder("@context")
+@JsonPropertyOrder(CONTEXT)
 public class NvaPerson {
 
     @JsonInclude(NON_NULL)

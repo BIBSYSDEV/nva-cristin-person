@@ -8,8 +8,10 @@ import com.github.bibsysdev.nva.cristin.person.model.nva.NvaAffiliation;
 import com.github.bibsysdev.nva.cristin.person.model.nva.NvaIdentifier;
 import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import nva.commons.core.JacocoGenerated;
 
 @JacocoGenerated
@@ -45,29 +47,29 @@ public class NvaPersonBuilder {
         return nvaPerson;
     }
 
-    private static NvaIdentifier createNvaIdentifierFromCristinPersonId(CristinPerson cristinPerson) {
+    private NvaIdentifier createNvaIdentifierFromCristinPersonId(CristinPerson cristinPerson) {
         NvaIdentifier nvaIdentifier = new NvaIdentifier();
         nvaIdentifier.setType(CRISTIN_IDENTIFIER_TYPE);
         nvaIdentifier.setValue(cristinPerson.getCristinPersonId());
         return nvaIdentifier;
     }
 
-    private static List<NvaAffiliation> createNvaAffiliationList(CristinPerson cristinPerson) {
-        List<NvaAffiliation> nvaAffiliations = new ArrayList<>();
-        if (cristinPerson.getAffiliations() != null) {
-            cristinPerson.getAffiliations()
-                .stream()
-                .filter(CristinAffiliation::getActive)
-                .forEach(cristinAffiliation -> {
-                    NvaAffiliation nvaAffiliation = new NvaAffiliation();
-                    nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
-                    if (cristinAffiliation.getPosition() != null && !cristinAffiliation.getPosition().isEmpty()) {
-                        nvaAffiliation.setRole(cristinAffiliation.getPosition());
-                    }
+    private List<NvaAffiliation> createNvaAffiliationList(CristinPerson cristinPerson) {
+        return Optional.ofNullable(cristinPerson.getAffiliations())
+            .orElseGet(Collections::emptyList)
+            .stream()
+            .filter(CristinAffiliation::getActive)
+            .map(this::convertCristinAffiliationToNvaAffiliation)
+            .collect(Collectors.toList());
+    }
 
-                    nvaAffiliations.add(nvaAffiliation);
-                });
+    private NvaAffiliation convertCristinAffiliationToNvaAffiliation(CristinAffiliation cristinAffiliation) {
+        NvaAffiliation nvaAffiliation = new NvaAffiliation();
+        nvaAffiliation.setId(cristinAffiliation.getUnit().getUrl());
+        if (cristinAffiliation.getPosition() != null && !cristinAffiliation.getPosition().isEmpty()) {
+            nvaAffiliation.setRole(cristinAffiliation.getPosition());
         }
-        return nvaAffiliations;
+
+        return nvaAffiliation;
     }
 }

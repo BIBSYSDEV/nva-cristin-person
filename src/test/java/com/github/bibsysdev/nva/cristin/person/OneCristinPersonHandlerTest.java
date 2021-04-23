@@ -1,6 +1,7 @@
 package com.github.bibsysdev.nva.cristin.person;
 
 import static com.github.bibsysdev.nva.cristin.person.OneCristinPersonHandler.DEFAULT_LANGUAGE_CODE;
+import static com.github.bibsysdev.nva.cristin.person.OneCristinPersonHandler.ID;
 import static com.github.bibsysdev.nva.cristin.person.OneCristinPersonHandler.LANGUAGE_QUERY_PARAMETER;
 import static nva.commons.apigateway.ApiGatewayHandler.APPLICATION_PROBLEM_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,9 +11,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bibsysdev.nva.cristin.person.model.cristin.CristinPerson;
 import com.github.bibsysdev.nva.cristin.person.model.nva.NvaPerson;
@@ -26,6 +25,7 @@ import java.util.Map;
 import no.unit.nva.testutils.HandlerRequestBuilder;
 import nva.commons.apigateway.GatewayResponse;
 import nva.commons.apigateway.HttpHeaders;
+import nva.commons.apigateway.exceptions.BadGatewayException;
 import nva.commons.core.Environment;
 import nva.commons.core.JsonUtils;
 import nva.commons.core.ioutils.IoUtils;
@@ -38,6 +38,7 @@ public class OneCristinPersonHandlerTest {
 
     private static final String EMPTY_JSON = "{}";
     private static final String CRISTIN_ONE_PERSON_INVALID_ID_JSON_FILE = "cristin_one_person_invalid_id.json";
+    private static final String CRISTIN_ONE_PERSON_NOT_FOUND_JSON_FILE = "cristin_one_person_not_found.json";
     private static final String NVA_ONE_PERSON_JSON_FILE = "nva_one_person.json";
     private static final String CRISTIN_ONE_PERSON_MISSING_FIELDS_JSON_FILE = "cristin_one_person_missing_fields.json";
     private static final String NVA_ONE_PERSON_MISSING_FIELDS_JSON_FILE = "nva_one_person_missing_fields.json";
@@ -60,9 +61,19 @@ public class OneCristinPersonHandlerTest {
     }
 
     @Test
-    void handlerReturnsEmptyJsonWhenIdIsNotFound() throws Exception {
+    void handlerReturnsEmptyJsonWhenIdIsInvalid() throws Exception {
         cristinApiClientStub = Mockito.spy(cristinApiClientStub);
         doReturn(getReader(CRISTIN_ONE_PERSON_INVALID_ID_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
+        handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
+        GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
+
+        assertEquals(objectMapper.readTree(EMPTY_JSON), objectMapper.readTree(response.getBody()));
+    }
+
+    @Test
+    void handlerReturnsEmptyJsonWhenIdIsNotFound() throws Exception {
+        cristinApiClientStub = Mockito.spy(cristinApiClientStub);
+        doReturn(getReader(CRISTIN_ONE_PERSON_NOT_FOUND_JSON_FILE)).when(cristinApiClientStub).getResponse(any());
         handler = new OneCristinPersonHandler(cristinApiClientStub, environment);
         GatewayResponse<NvaPerson> response = sendQueryWithId(DEFAULT_ID);
 
@@ -131,22 +142,13 @@ public class OneCristinPersonHandlerTest {
     }
 
     private GatewayResponse<NvaPerson> sendQueryWithId(String id) throws IOException {
-        InputStream input = requestWithLanguageAndId(
-            Map.of(LANGUAGE_QUERY_PARAMETER, DEFAULT_LANGUAGE_CODE),
-            Map.of("id", id)
-        );
-
+        InputStream input = new HandlerRequestBuilder<Void>(objectMapper)
+            .withBody(null)
+            .withQueryParameters(Map.of(LANGUAGE_QUERY_PARAMETER, DEFAULT_LANGUAGE_CODE))
+            .withPathParameters(Map.of(ID, id))
+            .build();
         handler.handleRequest(input, output, context);
         return GatewayResponse.fromOutputStream(output);
-    }
-
-    private InputStream requestWithLanguageAndId(Map<String, String> languageQueryParam,
-                                                 Map<String, String> idPathParam) throws JsonProcessingException {
-        return new HandlerRequestBuilder<Void>(objectMapper)
-            .withBody(null)
-            .withQueryParameters(languageQueryParam)
-            .withPathParameters(idPathParam)
-            .build();
     }
 
     private InputStreamReader getReader(String resource) {
