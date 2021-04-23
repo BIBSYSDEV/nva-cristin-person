@@ -42,6 +42,8 @@ Resources:
 
   ApiAccessLogGroup:
     Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 180
 
   NvaCristinPersonFunctionApi:
     Type: AWS::Serverless::Api
