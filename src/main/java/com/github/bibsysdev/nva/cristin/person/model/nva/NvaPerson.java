@@ -90,11 +90,7 @@ public class NvaPerson {
         this.verified = verified;
     }
 
-    public static NvaPersonBuilder builder(CristinPerson person){
-        return new NvaPersonBuilder(person);
-    }
-
-    public static NvaPerson fromCristinPerson(CristinPerson person){
-        return builder(person).build();
+    public static NvaPerson fromCristinPerson(CristinPerson person) {
+        return new NvaPersonBuilder(person).build();
     }
 }
