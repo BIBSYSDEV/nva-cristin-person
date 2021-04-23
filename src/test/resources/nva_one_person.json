@@ -1,0 +1,26 @@
+{
+  "@context": "https://example.org/person-context.json",
+  "id": "https://api.dev.nva.aws.unit.no/person/1111",
+  "type": "Person",
+  "identifier": [
+    {
+      "type": "CristinIdentifier",
+      "value": "1111"
+    }
+  ],
+  "name": "Testperson1, Mattias",
+  "affiliation": [
+    {
+      "id": "https://api.cristin.no/v2/units/204.40.0.0",
+      "role": null
+    },
+    {
+      "id": "https://api.cristin.no/v2/units/222.57.4.0",
+      "role": {
+        "en": "Professor"
+      }
+    }
+  ],
+  "imageUrl": "https://api.cristin.no/v2/persons/1111/picture",
+  "verified": true
+}
