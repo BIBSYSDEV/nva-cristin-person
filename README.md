@@ -19,7 +19,7 @@ If no persons are found, 'hits' returns as an empty array.
 
 *   200 - Ok, returns an array of 0-5 persons.
 *   400 - Bad request, returned if the parameters are invalid.
-*   500 - Internal server error, returned if a problem is encountered retrieving person data
+*   500 - Internal server error, returned if a problem is encountered retrieving person data.
 *   502 - Bad Gateway, returned if upstream get fails.
 
 ## GET person/{id}?{language_parameter}
@@ -27,7 +27,7 @@ If no persons are found, 'hits' returns as an empty array.
 | parameter | description |
 | ------ | ------ |
 | id | The unique identifier of one person (Mandatory)
-| language | Preferred language for names. Accepts 'nb' or 'en'. (Optional) |
+| language | Preferred language for names. Accepts 'nb', "nn" or 'en'. (Optional) |
 
 ### Lookup response
 
@@ -37,5 +37,5 @@ Returns a Json object containing one person
 
 *   200 - Ok, returns one person.
 *   400 - Bad request, returned if the parameters are invalid.
-*   500 - Internal server error, returned if a problem is encountered retrieving person data
+*   500 - Internal server error, returned if a problem is encountered retrieving person data.
 *   502 - Bad Gateway, returned if upstream get fails.
