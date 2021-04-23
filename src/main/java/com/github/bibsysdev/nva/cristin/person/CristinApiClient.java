@@ -89,7 +89,7 @@ public class CristinApiClient {
         if (cristinPerson == null || !cristinPerson.hasRequiredFields()) {
             return new EmptyNvaPerson();
         } else {
-            NvaPerson nvaPerson = new NvaPersonBuilder(cristinPerson).build();
+            NvaPerson nvaPerson = NvaPerson.fromCristinPerson(cristinPerson);
             nvaPerson.setContext(PERSON_LOOKUP_CONTEXT_URL);
             return nvaPerson;
         }

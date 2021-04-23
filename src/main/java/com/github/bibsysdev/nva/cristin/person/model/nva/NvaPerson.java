@@ -6,6 +6,8 @@ import static com.github.bibsysdev.nva.cristin.person.PersonsWrapper.CONTEXT;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.github.bibsysdev.nva.cristin.person.NvaPersonBuilder;
+import com.github.bibsysdev.nva.cristin.person.model.cristin.CristinPerson;
 import java.net.URI;
 import java.util.List;
 
@@ -86,5 +88,13 @@ public class NvaPerson {
 
     public void setVerified(Boolean verified) {
         this.verified = verified;
+    }
+
+    public static NvaPersonBuilder builder(CristinPerson person){
+        return new NvaPersonBuilder(person);
+    }
+
+    public static NvaPerson fromCristinPerson(CristinPerson person){
+        return builder(person).build();
     }
 }
